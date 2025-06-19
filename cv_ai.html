@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منشئ السيرة الذاتية بالذكاء الاصطناعي | CV AI Builder</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 10s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: white;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: slideDown 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: slideUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Features Section */
+        .features {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 4rem 2rem;
+            margin: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #4a5568;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* CV Builder Form */
+        .cv-builder {
+            background: rgba(255, 255, 255, 0.95);
+            margin: 2rem;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 2px dashed #e2e8f0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .form-section:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .form-section h3 {
+            color: #4a5568;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #4a5568;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* File Upload */
+        .file-upload {
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .file-upload:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: scale(1.02);
+        }
+
+        .file-upload i {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        /* AI Processing Animation */
+        .ai-processing {
+            display: none;
+            text-align: center;
+            padding: 3rem;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+
+        .ai-loading {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #e2e8f0;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* CV Preview */
+        .cv-preview {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            z-index: 1000;
+        }
+
+        /* Progress Steps */
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #a0aec0;
+            font-weight: 600;
+        }
+
+        .step.active {
+            color: #667eea;
+        }
+
+        .step.completed {
+            color: #48bb78;
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .step.active .step-number {
+            background: #667eea;
+            color: white;
+        }
+
+        .step.completed .step-number {
+            background: #48bb78;
+            color: white;
+        }
+
+        /* Help Modal */
+        .help-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .help-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-links { display: none; }
+            .form-row { grid-template-columns: 1fr; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+        }
+
+        .demo-video {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 2rem auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .video-placeholder {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            aspect-ratio: 16/9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .video-placeholder:hover {
+            transform: scale(1.02);
+        }
+
+        .ai-suggestions {
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .ai-suggestions h4 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .suggestion-item {
+            padding: 0.5rem;
+            background: white;
+            border-radius: 5px;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .suggestion-item:hover {
+            background: #f7fafc;
+            transform: translateX(5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg"></div>
+    
+    <!-- Floating Particles -->
+    <div class="particle" style="top: 10%; left: 20%; width: 20px; height: 20px; animation-delay: 0s;"></div>
+    <div class="particle" style="top: 20%; right: 20%; width: 15px; height: 15px; animation-delay: 2s;"></div>
+    <div class="particle" style="top: 70%; left: 10%; width: 25px; height: 25px; animation-delay: 4s;"></div>
+    <div class="particle" style="bottom: 20%; right: 10%; width: 18px; height: 18px; animation-delay: 1s;"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <i class="fas fa-robot"></i>
+                منشئ السيرة الذاتية AI
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">الرئيسية</a></li>
+                <li><a href="#features">المميزات</a></li>
+                <li><a href="#builder">إنشاء السيرة</a></li>
+                <li><a href="#" onclick="showHelp()">المساعدة</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <h1>أنشئ سيرتك الذاتية بالذكاء الاصطناعي</h1>
+        <p>احصل على سيرة ذاتية احترافية في دقائق معدودة باستخدام أحدث تقنيات الذكاء الاصطناعي</p>
+        
+        <div class="cta-buttons">
+            <a href="#builder" class="btn btn-primary">
+                <i class="fas fa-magic"></i>
+                ابدأ الآن مجاناً
+            </a>
+            <a href="#demo" class="btn btn-secondary" onclick="showDemo()">
+                <i class="fas fa-play"></i>
+                شاهد العرض التوضيحي
+            </a>
+        </div>
+
+        <!-- Demo Video -->
+        <div class="demo-video" id="demo" style="display: none;">
+            <div class="video-placeholder" onclick="playDemo()">
+                <div style="text-align: center;">
+                    <i class="fas fa-play" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                    <div>انقر لمشاهدة كيفية عمل الموقع</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="features-container">
+            <h2>لماذا تختار منشئ السيرة الذاتية AI؟</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>ذكاء اصطناعي متطور</h3>
+                    <p>يستخدم أحدث نماذج الذكاء الاصطناعي (GPT-4, Claude, Gemini) لإنشاء محتوى احترافي ومخصص</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3>دعم متعدد اللغات</h3>
+                    <p>إنشاء السيرة الذاتية باللغة العربية والإنجليزية مع ترجمة تلقائية عالية الجودة</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3>تصاميم متنوعة</h3>
+                    <p>اختر من بين عشرات القوالب الاحترافية المناسبة لمختلف المجالات والوظائف</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-file-export"></i>
+                    </div>
+                    <h3>تصدير متعدد الصيغ</h3>
+                    <p>حمل سيرتك الذاتية بصيغة PDF، Word، أو HTML مع إمكانية المشاركة المباشرة</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>اقتراحات ذكية</h3>
+                    <p>يقترح الذكاء الاصطناعي تحسينات ومهارات إضافية لتعزيز فرصك في الحصول على الوظيفة</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>أمان البيانات</h3>
+                    <p>حماية كاملة لبياناتك الشخصية مع تشفير متقدم وعدم حفظ المعلومات الحساسة</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CV Builder Section -->
+    <section class="cv-builder" id="builder">
+        <h2 style="text-align: center; color: #4a5568; margin-bottom: 2rem;">
+            <i class="fas fa-magic"></i>
+            أنشئ سيرتك الذاتية الآن
+        </h2>
+
+        <!-- Progress Steps -->
+        <div class="progress-steps">
+            <div class="step active" id="step1">
+                <div class="step-number">1</div>
+                <span>المعلومات الأساسية</span>
+            </div>
+            <div class="step" id="step2">
+                <div class="step-number">2</div>
+                <span>الخبرات والتعليم</span>
+            </div>
+            <div class="step" id="step3">
+                <div class="step-number">3</div>
+                <span>المهارات والإنجازات</span>
+            </div>
+            <div class="step" id="step4">
+                <div class="step-number">4</div>
+                <span>إنشاء السيرة</span>
+            </div>
+        </div>
+
+        <form id="cvForm">
+            <!-- Personal Information -->
+            <div class="form-section" id="section1">
+                <h3>
+                    <i class="fas fa-user"></i>
+                    المعلومات الشخصية
+                    <i class="fas fa-question-circle tooltip" data-tooltip="أدخل معلوماتك الأساسية التي ستظهر في رأس السيرة الذاتية"></i>
+                </h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">الاسم الأول *</label>
+                        <input type="text" id="firstName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">اسم العائلة *</label>
+                        <input type="text" id="lastName" class="form-control" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">البريد الإلكتروني *</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">رقم الهاتف *</label>
+                        <input type="tel" id="phone" class="form-control" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">العنوان</label>
+                    <input type="text" id="address" class="form-control" placeholder="المدينة، البلد">
+                </div>
+                
+                <div class="form-group">
+                    <label for="jobTitle">المسمى الوظيفي المرغوب</label>
+                    <input type="text" id="jobTitle" class="form-control" placeholder="مثال: مطور ويب، مصمم جرافيك">
+                </div>
+
+                <!-- File Upload Option -->
+                <div class="form-group">
+                    <label>أو ارفع ملف PDF لسيرتك الذاتية الحالية</label>
+                    <div class="file-upload" onclick="document.getElementById('fileInput').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <div>اسحب الملف هنا أو انقر للتحديد</div>
+                        <small>PDF, DOC, DOCX (حتى 5 ميجابايت)</small>
+                    </div>
+                    <input type="file" id="fileInput" style="display: none;" accept=".pdf,.doc,.docx">
+                </div>
+            </div>
+
+            <!-- Professional Summary -->
+            <div class="form-section" id="section2" style="display: none;">
+                <h3>
+                    <i class="fas fa-briefcase"></i>
+                    الملخص المهني والخبرات
+                </h3>
+                
+                <div class="form-group">
+                    <label for="summary">الملخص المهني</label>
+                    <textarea id="summary" class="form-control" rows="4" placeholder="اكتب ملخصاً موجزاً عن خبراتك ومهاراتك..."></textarea>
+                </div>
+
+                <!-- AI Suggestions -->
+                <div class="ai-suggestions">
+                    <h4><i class="fas fa-lightbulb"></i> اقتراحات الذكاء الاصطناعي</h4>
+                    <div class="suggestion-item" onclick="applySuggestion('summary', 'محترف في مجال التطوير مع خبرة 5 سنوات في تطوير التطبيقات والمواقع الإلكترونية')">
+                        محترف في مجال التطوير مع خبرة 5 سنوات...
+                    </div>
+                    <div class="suggestion-item" onclick="applySuggestion('summary', 'مختص في التسويق الرقمي مع شغف بالإبداع والابتكار')">
+                        مختص في التسويق الرقمي مع شغف بالإبداع...
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="experience">الخبرات العملية</label>
+                    <textarea id="experience" class="form-control" rows="6" placeholder="اذكر خبراتك العملية مع تواريخ العمل والمسؤوليات..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="education">التعليم والمؤهلات</label>
+                    <textarea id="education" class="form-control" rows="4" placeholder="اذكر مؤهلاتك التعليمية والشهادات..."></textarea>
+                </div>
+            </div>
+
+            <!-- Skills -->
+            <div class="form-section" id="section3" style="display: none;">
+                <h3>
+                    <i class="fas fa-star"></i>
+                    المهارات والإنجازات
+                </h3>
+                
+                <div class="form-group">
+                    <label for="skills">المهارات التقنية</label>
+                    <input type="text" id="skills" class="form-control" placeholder="JavaScript, Python, Adobe Photoshop... (افصل بينها بفاصلة)">
+                </div>
+                
+                <div class="form-group">
+                    <label for="languages">اللغات</label>
+                    <input type="text" id="languages" class="form-control" placeholder="العربية (أصلية), الإنجليزية (متقدم)...">
+                </div>
+                
+                <div class="form-group">
+                    <label for="achievements">الإنجازات والجوائز</label>
+                    <textarea id="achievements" class="form-control" rows="3" placeholder="اذكر أهم إنجازاتك وجوائزك..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="projects">المشاريع المهمة</label>
+                    <textarea id="projects" class="form-control" rows="4" placeholder="اذكر أهم مشاريعك مع وصف موجز لكل مشروع..."></textarea>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+                <button type="button" class="btn btn-secondary" id="prevBtn" onclick="changeStep(-1)" style="display: none;">
+                    <i class="fas fa-arrow-right"></i>
+                    السابق
+                </button>
+                <button type="button" class="btn btn-primary" id="nextBtn" onclick="changeStep(1)">
+                    التالي
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <button type="button" class="btn btn-primary" id="generateBtn" onclick="generateCV()" style="display: none;">
+                    <i class="fas fa-magic"></i>
+                    إنشاء السيرة الذاتية
+                </button>
+            </div>
+        </form>
+
+        <!-- AI Processing Animation -->
+        <div class="ai-processing" id="aiProcessing">
+            <div class="ai-loading"></div>
+            <h3>الذكاء الاصطناعي يعمل على إنشاء سيرتك الذاتية...</h3>
+            <p>يرجى الانتظار بينما نقوم بتحليل معلوماتك وإنشاء سيرة ذاتية احترافية</p>
+            <div style="margin-top: 1rem;">
+                <div id="aiStatus">تحليل البيانات المدخلة...</div>
+            </div>
+        </div>
+
+        <!-- CV Preview -->
+        <div class="cv-preview" id="cvPreview">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h3><i class="fas fa-eye"></i> معاينة السيرة الذاتية</h3>
+                <div>
+                    <button class="btn btn-secondary" onclick="editCV()">
+                        <i class="fas fa-edit"></i>
+                        تعديل
+                    </button>
+                    <button class="btn btn-primary" onclick="downloadCV()">
+                        <i class="fas fa-download"></i>
+                        تحميل PDF
+                    </button>
+                </div>
+            </div>
+            <div id="cvContent" style="background: white; padding: 2rem; border: 1px solid #e2e8f0; border-radius: 10px;">
+                <!-- Generated CV will appear here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Help Modal -->
+    <div class="help-modal" id="helpModal">
+        <div class="help-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3><i class="fas fa-question-circle"></i> دليل الاستخدام</h3>
+                <button onclick="hideHelp()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">×</button>
+            </div>
+            
+            <div style="max-height: 60vh; overflow-y: auto;">
+                <h4>كيفية استخدام منشئ السيرة الذاتية AI:</h4>
+                
+                <div style="margin: 1rem 0;">
+                    <h5><i class="fas fa-step-forward"></i> الخطوة 1: المعلومات الأساسية</h5>
+                    <p>أدخل معلوماتك الشخصية الأساسية مثل الاسم، البريد الإلكتروني، ورقم الهاتف. يمكنك أيضاً رفع ملف PDF لسيرتك الذاتية الحالية لاستخراج المعلومات تلقائياً.</p>
+                </div>
+                
+                <div style="margin: 1rem 0;">
+                    <h5><i class="fas fa-step-forward"></i> الخطوة 2: الخبرات والتعليم</h5>
+                    <p>اكتب ملخصاً مهنياً موجزاً عن نفسك، واذكر خبراتك العملية ومؤهلاتك التعليمية. استفد من اقتراحات الذكاء الاصطناعي لتحسين المحتوى.</p>
+                </div>
+                
+                <div style="margin: 1rem 0;">
+                    <h5><i class="fas fa-step-forward"></i> الخطوة 3: المهارات والإنجازات</h5>
+                    <p>أضف مهاراتك التقنية، اللغات التي تتقنها، وأهم إنجازاتك ومشاريعك. هذا يساعد في إبراز نقاط قوتك.</p>
+                </div>
+                
+                <div style="margin: 1rem 0;">
+                    <h5><i class="fas fa-step-forward"></i> الخطوة 4: إنشاء السيرة</h5>
+                    <p>اضغط على "إنشاء السيرة الذاتية" وانتظر بينما يقوم الذكاء الاصطناعي بإنشاء سيرة ذاتية احترافية مخصصة لك.</p>
+                </div>
+                
+                <h4>نصائح للحصول على أفضل النتائج:</h4>
+                <ul style="text-align: right;">
+                    <li>كن محدداً في وصف خبراتك وإنجازاتك</li>
+                    <li>استخدم كلمات مفتاحية متعلقة بمجال عملك</li>
+                    <li>اذكر أرقام ونتائج محددة عند الإمكان</li>
+                    <li>راجع السيرة الذاتية المُنشأة وعدّل ما تراه مناسباً</li>
+                </ul>
+                
+                <h4>الذكاء الاصطناعي المدعوم:</h4>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0;">
+                    <span style="background: #e2e8f0; padding: 0.5rem; border-radius: 5px;">GPT-4</span>
+                    <span style="background: #e2e8f0; padding: 0.5rem; border-radius: 5px;">Claude</span>
+                    <span style="background: #e2e8f0; padding: 0.5rem; border-radius: 5px;">Gemini</span>
+                    <span style="background: #e2e8f0; padding: 0.5rem; border-radius: 5px;">LLaMA</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        // Initialize particles
+        function createParticles() {
+            for (let i = 0; i < 10; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 30 + 10 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                document.body.appendChild(particle);
+            }
+        }
+
+        // Step navigation
+        function changeStep(direction) {
+            const newStep = currentStep + direction;
+            
+            if (newStep < 1 || newStep > totalSteps) return;
+            
+            // Hide current section
+            document.getElementById(`section${currentStep}`).style.display = 'none';
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            
+            // Show new section
+            currentStep = newStep;
+            
+            if (currentStep <= 3) {
+                document.getElementById(`section${currentStep}`).style.display = 'block';
+                document.getElementById(`step${currentStep}`).classList.add('active');
+            }
+            
+            // Update buttons
+            document.getElementById('prevBtn').style.display = currentStep > 1 ? 'block' : 'none';
+            document.getElementById('nextBtn').style.display = currentStep < 3 ? 'block' : 'none';
+            document.getElementById('generateBtn').style.display = currentStep === 3 ? 'block' : 'none';
+            
+            // Mark completed steps
+            for (let i = 1; i < currentStep; i++) {
+                document.getElementById(`step${i}`).classList.add('completed');
+            }
+        }
+
+        // Generate CV using AI
+        async function generateCV() {
+            const formData = collectFormData();
+            
+            if (!validateFormData(formData)) {
+                alert('يرجى ملء جميع الحقول المطلوبة');
+                return;
+            }
+            
+            // Show AI processing animation
+            document.getElementById('aiProcessing').style.display = 'block';
+            document.querySelector('.cv-builder').style.display = 'none';
+            
+            // Simulate AI processing with status updates
+            const statusMessages = [
+                'تحليل البيانات المدخلة...',
+                'اختيار أفضل قالب للسيرة الذاتية...',
+                'تحسين المحتوى باستخدام الذكاء الاصطناعي...',
+                'تنسيق السيرة الذاتية...',
+                'إضافة اللمسات الأخيرة...'
+            ];
+            
+            for (let i = 0; i < statusMessages.length; i++) {
+                setTimeout(() => {
+                    document.getElementById('aiStatus').textContent = statusMessages[i];
+                }, i * 1000);
+            }
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                const generatedCV = createCVContent(formData);
+                document.getElementById('cvContent').innerHTML = generatedCV;
+                
+                // Hide processing and show preview
+                document.getElementById('aiProcessing').style.display = 'none';
+                document.getElementById('cvPreview').style.display = 'block';
+                
+                // Update progress
+                document.getElementById('step4').classList.add('active');
+            }, 5000);
+        }
+
+        // Collect form data
+        function collectFormData() {
+            return {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                jobTitle: document.getElementById('jobTitle').value,
+                summary: document.getElementById('summary').value,
+                experience: document.getElementById('experience').value,
+                education: document.getElementById('education').value,
+                skills: document.getElementById('skills').value,
+                languages: document.getElementById('languages').value,
+                achievements: document.getElementById('achievements').value,
+                projects: document.getElementById('projects').value
+            };
+        }
+
+        // Validate form data
+        function validateFormData(data) {
+            return data.firstName && data.lastName && data.email && data.phone;
+        }
+
+        // Create CV content
+        function createCVContent(data) {
+            return `
+                <div style="max-width: 800px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.6;">
+                    <!-- Header -->
+                    <div style="text-align: center; padding: 2rem 0; border-bottom: 3px solid #667eea;">
+                        <h1 style="color: #333; margin: 0; font-size: 2.5rem;">${data.firstName} ${data.lastName}</h1>
+                        <h2 style="color: #667eea; margin: 0.5rem 0; font-size: 1.5rem;">${data.jobTitle || 'محترف'}</h2>
+                        <div style="color: #666; margin-top: 1rem;">
+                            <span style="margin: 0 1rem;"><i class="fas fa-envelope"></i> ${data.email}</span>
+                            <span style="margin: 0 1rem;"><i class="fas fa-phone"></i> ${data.phone}</span>
+                            ${data.address ? `<span style="margin: 0 1rem;"><i class="fas fa-map-marker-alt"></i> ${data.address}</span>` : ''}
+                        </div>
+                    </div>
+
+                    <!-- Professional Summary -->
+                    ${data.summary ? `
+                    <div style="margin: 2rem 0;">
+                        <h3 style="color: #333; border-bottom: 2px solid #667eea; padding-bottom: 0.5rem;">الملخص المهني</h3>
+                        <p style="color: #555; text-align: justify;">${data.summary}</p>
+                    </div>
+                    ` : ''}
+
+                    <!-- Experience -->
+                    ${data.experience ? `
+                    <div style="margin: 2rem 0;">
+                        <h3 style="color: #333; border-bottom: 2px solid #667eea; padding-bottom: 0.5rem;">الخبرات العملية</h3>
+                        <div style="color: #555; white-space: pre-line;">${data.experience}</div>
+                    </div>
+                    ` : ''}
+
+                    <!-- Education -->
+                    ${data.education ? `
+                    <div style="margin: 2rem 0;">
+                        <h3 style="color: #333; border-bottom: 2px solid #667eea; padding-bottom: 0.5rem;">التعليم والمؤهلات</h3>
+                        <div style="color: #555; white-space: pre-line;">${data.education}</div>
+                    </div>
+                    ` : ''}
+
+                    <!-- Skills -->
+                    ${data.skills ? `
+                    <div style="margin: 2rem 0;">
+                        <h3 style="color: #333; border-bottom: 2px solid #667eea; padding-bottom: 0.5rem;">المهارات التقنية</h3>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;">
+                            ${data.skills.split(',').map(skill => `<span style="background: #f0f4ff; color: #667eea; padding: 0.25rem 0.75rem; border-radius: 15px; font-size: 0.9rem;">${skill.trim()}</span>`).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    <!-- Languages -->
+                    ${data.languages ? `
+                    <div style="margin: 2rem 0;">
+                        <h3 style="color: #333; border-bottom: 2px solid #667eea; padding-bottom: 0.5rem;">اللغات</h3>
+                        <p style="color: #555;">${data.languages}</p>
+                    </div>
+                    ` : ''}
+
+                    <!-- Projects -->
+                    ${data.projects ? `
+                    <div style="margin: 2rem 0;">
+                        <h3 style="color: #333; border-bottom: 2px solid #667eea; padding-bottom: 0.5rem;">المشاريع المهمة</h3>
+                        <div style="color: #555; white-space: pre-line;">${data.projects}</div>
+                    </div>
+                    ` : ''}
+
+                    <!-- Achievements -->
+                    ${data.achievements ? `
+                    <div style="margin: 2rem 0;">
+                        <h3 style="color: #333; border-bottom: 2px solid #667eea; padding-bottom: 0.5rem;">الإنجازات والجوائز</h3>
+                        <div style="color: #555; white-space: pre-line;">${data.achievements}</div>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // Apply AI suggestion
+        function applySuggestion(fieldId, suggestion) {
+            document.getElementById(fieldId).value = suggestion;
+            // Add animation effect
+            const field = document.getElementById(fieldId);
+            field.style.background = '#e6fffa';
+            setTimeout(() => {
+                field.style.background = '';
+            }, 1000);
+        }
+
+        // Edit CV
+        function editCV() {
+            document.getElementById('cvPreview').style.display = 'none';
+            document.querySelector('.cv-builder').style.display = 'block';
+            currentStep = 1;
+            changeStep(0);
+        }
+
+        // Download CV as PDF
+        function downloadCV() {
+            // In a real implementation, this would generate and download a PDF
+            alert('ميزة تحميل PDF ستكون متاحة قريباً. حالياً يمكنك نسخ المحتوى أو طباعة الصفحة.');
+            window.print();
+        }
+
+        // Show/Hide help modal
+        function showHelp() {
+            document.getElementById('helpModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideHelp() {
+            document.getElementById('helpModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Show demo video
+        function showDemo() {
+            const demo = document.getElementById('demo');
+            demo.style.display = demo.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function playDemo() {
+            alert('هذا عرض توضيحي تفاعلي. في النسخة الكاملة ستجد فيديو يوضح كيفية استخدام الموقع خطوة بخطوة.');
+        }
+
+        // File upload handling
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const fileName = file.name;
+                const fileSize = (file.size / 1024 / 1024).toFixed(2);
+                
+                // Update upload area
+                const uploadArea = document.querySelector('.file-upload');
+                uploadArea.innerHTML = `
+                    <i class="fas fa-check-circle" style="color: #48bb78;"></i>
+                    <div>${fileName}</div>
+                    <small>حجم الملف: ${fileSize} ميجابايت</small>
+                `;
+                uploadArea.style.background = 'rgba(72, 187, 120, 0.1)';
+                uploadArea.style.borderColor = '#48bb78';
+                
+                // In a real implementation, you would parse the file and populate the form
+                alert('تم رفع الملف بنجاح! في النسخة الكاملة سيتم استخراج المعلومات تلقائياً.');
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            
+            // Add form validation
+            const inputs = document.querySelectorAll('.form-control');
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    if (this.hasAttribute('required') && !this.value) {
+                        this.style.borderColor = '#e53e3e';
+                    } else {
+                        this.style.borderColor = '#e2e8f0';
+                    }
+                });
+            });
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('helpModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideHelp();
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                hideHelp();
+            }
+        });
+    </script>
+</body>
+</html>
